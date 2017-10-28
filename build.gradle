@@ -1,6 +1,6 @@
 //Gradle file library ev3dev-lang-java // Template project
 
-version = '0.2.0'
+version = '0.1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -41,6 +41,10 @@ task fatJar(type: Jar) {
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+task showMeCache << {
+    configurations.compile.each { println it }
 }
 
 //Deploy on Brick
