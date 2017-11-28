@@ -24,34 +24,43 @@ public final class ImageHelper {
         lcd.clear();
     }
 
-    public static void showEyes(final EyesImageType eyesType) throws IOException {
+    public static void showEyes(final EyesImageType eyesType) {
         showImage(eyesType.getFileName(), 0, 0, DEFAULT_DELETE_AFTERWARDS, DEFAULT_FORCE_EXPORT);
     }
 
     public static void showEyes(final EyesImageType eyesType,
-                                final boolean deleteAfterwards, final boolean forceExport) throws IOException {
+                                final boolean deleteAfterwards, final boolean forceExport) {
         showImage(eyesType.getFileName(), 0, 0, deleteAfterwards, forceExport);
     }
 
     public static void showImage(final String imageFileName,
-                                 final int x, final int y) throws IOException {
+                                 final int x, final int y) {
         showImage(imageFileName, x, y, DEFAULT_DELETE_AFTERWARDS, DEFAULT_FORCE_EXPORT);
     }
 
     public static void showImage(final String imageFileName,
                                  final int x, final int y,
-                                 final boolean deleteAfterwards, final boolean forceExport) throws IOException {
+                                 final boolean deleteAfterwards, final boolean forceExport) {
 
         // exporting the image from resources to a file (if it doesn't exist or if the export is forced)
         final File imageFile = new File(imageFileName);
         if (forceExport || ! imageFile.exists()) {
-            JarResource.export(imageFileName);
+            try {
+                JarResource.export(imageFileName);
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
             log.debug("Image exported to {}", imageFile);
         }
 
         // loading the Image
-        final Image image = ImageIO.read(imageFile);
-        log.debug("Loaded image content from {}", imageFile);
+        final Image image;
+        try {
+            image = ImageIO.read(imageFile);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+        log.debug("Image content loaded from file {}", imageFile);
 
         // drawing the image
         lcd.drawImage(image, x, y, 0);  // third parameter seems to be ignored
@@ -62,7 +71,7 @@ public final class ImageHelper {
             if (! imageFile.delete()) {
                 log.warn("Failed to delete the image file {}", imageFile);
             } else {
-                log.debug("Deleted the image file {}", imageFile);
+                log.debug("Image file {} deleted", imageFile);
             }
         }
     }

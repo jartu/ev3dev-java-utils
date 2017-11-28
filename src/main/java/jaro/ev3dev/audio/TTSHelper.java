@@ -48,12 +48,6 @@ public final class TTSHelper {
         TTS.say();
     }
 
-    public static void sayNonBlocking(final String message) {
-        new Thread(() -> {
-            sayBlocking(message);
-        }).start();
-    }
-
     private static void set(final BiConsumer<Espeak, Integer> setter, final String valueName, final int value,
                             final int minValue, final int maxValue) {
         if (value < minValue || value > maxValue) {

@@ -16,6 +16,7 @@ dependencies {
     compile("ch.qos.logback:logback-classic:1.2.3")
     compile("com.github.ev3dev-lang-java:ev3dev-lang-java:0.7.0")
     compile("com.github.ev3dev-lang-java:lejos-navigation:0.2.0")
+    compile("org.apache.commons:commons-lang3:3.5")
 //    compile("jaro:ev3dev-lang-java:0.7.0-SNAPSHOT")
 }
 

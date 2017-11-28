@@ -45,4 +45,9 @@ public class LedBlinker extends Thread {
             iterations++;
         }
     }
+
+    public synchronized void terminate() {
+        this.terminate = true;
+        this.notify();
+    }
 }
